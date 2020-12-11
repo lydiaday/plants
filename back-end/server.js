@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/museum', {
 // Configure multer so that it will upload to '../front-end/public/images'
 const multer = require('multer')
 const upload = multer({
-  dest: '../front-end/public/images/',
+  dest: '/var/www/plants.lydiaday.com/images/',
   limits: {
     fileSize: 10000000
   }
@@ -29,6 +29,9 @@ const upload = multer({
 const itemSchema = new mongoose.Schema({
   title: String,
   description: String,
+  species: String,
+  lastFed: String,
+  lastWatered: String,
   path: String,
 });
 
@@ -44,6 +47,9 @@ app.put('/api/items/:id', async (req, res) => {
     });
     item.title = req.body.title;
     item.description = req.body.description;
+    item.species = req.body.species;
+    item.lastFed = req.body.lastFed;
+    item.lastWatered = req.body.lastWatered;
     item.save();
     res.sendStatus(200);
   } catch (error) {
@@ -97,6 +103,9 @@ app.post('/api/items', async (req, res) => {
   const item = new Item({
     title: req.body.title,
     description: req.body.description,
+    species: req.body.species,
+    lastFed: req.body.lastFed,
+    lastWatered: req.body.lastWatered,
     path: req.body.path,
   });
   try {
@@ -108,4 +117,4 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server listening on port 3000!'));
+app.listen(4000, () => console.log('Server listening on port 4000!'));

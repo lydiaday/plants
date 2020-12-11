@@ -1,20 +1,31 @@
 <template>
 <div id="app">
+
   <div class="header">
     <router-link to="/">
       <div class="logo">
         <img src="/ordinary.png">
       </div>
     </router-link>
-    <div class="title">
-      <h1>Museum of Ordinary Objects</h1>
-    </div>
+      <div class="title">
+        <h1>Plant Inventory</h1>
+      </div>
+    <router-link to="/">
+      <div class="logo">
+        <img src="/ordinary.png">
+      </div>
+    </router-link>
   </div>
+  <div class="addLink">
+    <router-link to="/admin">Add or update plant</router-link>
+  </div>
+
   <div class="content">
     <router-view />
   </div>
   <div class="footer">
-    <router-link to="/admin">Admin</router-link>
+    <a href="https://github.com/lydiaday/plants.git" target="_blank">Github Link</a>
+
   </div>
 </div>
 </template>
@@ -32,16 +43,41 @@ body {
   margin: 0px;
 }
 
+
+
 /* Header */
 .header {
   display: flex;
   padding: 10px 100px 0px 100px;
-  background-color: #5BDEFF;
+  background-color: #F5F5F5;
   color: #1C454F;
+  text-decoration: none;
+  justify-content: center;
+}
+
+
+.addLink {
+  margin-top: 15px;
+  font-family: "SF Pro Text";
+  font-size: 20px;
+  color: #196F3D;
+  text-align: center;
+}
+
+.addLink a {
+  text-decoration: none;
+  color: #196F3D;
+}
+
+.logo img {
+  height: 100px;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .title {
   margin-top: 5px;
+  text-decoration: none;
 }
 
 .title h1 {

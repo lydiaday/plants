@@ -1,51 +1,79 @@
 <template>
 <div class="admin">
-  <h1>The Admin Page!</h1>
-  <div class="heading">
-    <div class="circle">1</div>
-    <h2>Add an Item</h2>
-  </div>
-  <div class="add">
-    <div class="form">
-      <input v-model="title" placeholder="Title">
+  <h1>Add or update plants below</h1>
+  <div class="addAndEdit">
 
-      <p></p>
-      <input type="file" name="photo" @change="fileChanged">
+    <div class="add">
+      <div class="heading">
+        <div class="circle">1</div>
+        <h2>Add Your Plant</h2>
+      </div>
+      <div class="form">
+        <input v-model="title" placeholder="Plant Name">
 
-      <p></p>
-      <textarea v-model="description" placeholder="Description"></textarea>
-      <p></p>
-      <button @click="upload">Upload</button>
+        <p></p>
+        <input type="file" name="photo" @change="fileChanged">
+        <p></p>
+        <input v-model="species" placeholder="Species">
+        <p></p>
+        When was it last watered? <input type="date" v-model="lastWatered">
+        <p></p>
+        When was it last fertilized? <input type="date" v-model="lastFed">
+        <p></p>
+        <textarea v-model="description" placeholder="Notes"></textarea>
+        <p></p>
+        <button @click="upload">Upload</button>
 
-    </div>
-    <div class="upload" v-if="addItem">
-      <h2>{{addItem.title}}</h2>
-      <img :src="addItem.path" />
-      <h3>{{addItem.description}}</h3>
-    </div>
-  </div>
-  <div class="heading">
-    <div class="circle">2</div>
-    <h2>Edit/Delete an Item</h2>
-  </div>
-  <div class="edit">
-    <div class="form">
-      <input v-model="findTitle" placeholder="Search">
-      <div class="suggestions" v-if="suggestions.length > 0">
-        <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
-        </div>
+      </div>
+      <div class="upload" v-if="addItem">
+        <p></p>
+        <h3>Added!</h3>
+        <p></p>
+        <img :src="addItem.path" />
+        <p></p>
+        Name: {{addItem.title}}
+        <p></p>
+        Species: {{addItem.species}}
+        <p></p>
+        Last Watered: {{addItem.lastWatered}}
+        <p></p>
+        Last Fertilized: {{addItem.lastFed}}
+        <p></p>
+        Notes: {{addItem.description}}
       </div>
     </div>
-    <div class="upload" v-if="findItem">
-      <input v-model="findItem.title" placeholder="New Title">
-      <p></p>
-      <img :src="findItem.path" />
-      <p></p>
-      <textarea v-model="findItem.description" placeholder="New Description"></textarea>
-    </div>
-    <div class="actions" v-if="findItem">
-      <button @click="deleteItem(findItem)">Delete</button>
-      <button @click="editItem(findItem)">Edit</button>
+
+
+    <div class="edit">
+      <div class="heading">
+        <div class="circle">2</div>
+        <h2>Update Your Plant</h2>
+      </div>
+      <div class="form">
+        <input v-model="findTitle" placeholder="Search">
+        <div class="suggestions" v-if="suggestions.length > 0">
+          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
+          </div>
+        </div>
+      </div>
+      <div class="upload" v-if="findItem">
+        <p></p>
+        <img :src="findItem.path" />
+        <p></p>
+        Name: <input v-model="findItem.title" placeholder="Name">
+        <p></p>
+        Species: <input v-model="findItem.species" placeholder="Species">
+        <p></p>
+        When was it last watered? <input type="date" v-model="findItem.lastWatered">
+        <p></p>
+        When was it last fertilized? <input type="date" v-model="findItem.lastFed">
+        <p></p>
+        <textarea v-model="findItem.description" placeholder="Notes"></textarea>
+      </div>
+      <div class="actions" v-if="findItem">
+        <button @click="deleteItem(findItem)">Delete</button>
+        <button @click="editItem(findItem)">Edit</button>
+      </div>
     </div>
   </div>
 </div>
@@ -61,6 +89,9 @@ export default {
       title: "",
       file: null,
       description: "",
+      lastFed: "",
+      lastWatered: "",
+      species: "",
       addItem: null,
       items: [],
       findTitle: "",
@@ -82,6 +113,9 @@ export default {
         await axios.put("/api/items/" + item._id, {
           title: this.findItem.title,
           description: this.findItem.description,
+          species: this.findItem.species,
+          lastFed: this.findItem.lastFed,
+          lastWatered: this.findItem.lastWatered,
         });
         this.findItem = null;
         this.getItems();
@@ -124,6 +158,9 @@ export default {
         let r2 = await axios.post('/api/items', {
           title: this.title,
           description: this.description,
+          species: this.species,
+          lastFed: this.lastFed,
+          lastWatered: this.lastWatered,
           path: r1.data.path
         });
         this.addItem = r2.data;
@@ -174,8 +211,14 @@ export default {
   margin-left: 10px;
 }
 
+.addAndEdit {
+  display: flex;
+  justify-content: space-around;
+}
+
 .add,
 .edit {
+  flex-direction: column;
   display: flex;
 }
 
@@ -197,6 +240,7 @@ button {
   font-family: 'Montserrat', sans-serif;
   font-size: 1em;
 }
+
 
 .form {
   margin-right: 50px;

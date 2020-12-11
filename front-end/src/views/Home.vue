@@ -4,7 +4,10 @@
     <div class="image" v-for="item in items" :key="item.id">
       <h2>{{item.title}}</h2>
       <img :src="item.path" />
-      <h3>{{item.description}}</h3>
+      <h3><i>Last Watered:  </i>{{item.lastWatered}}</h3>
+      <h3><i>Last Fertilized:  </i>{{item.lastFed}}</h3>
+      <h3><i>Species:  </i>{{item.species}}</h3>
+      <h3><i>Notes:  </i>{{item.description}}</h3>
     </div>
   </section>
 </div>
@@ -40,12 +43,10 @@ export default {
 
 <style scoped>
 .image h2 {
-  font-style: italic;
   font-size: 25px;
 }
 
 .image h3 {
-  font-style: italic;
   font-size: 15px;
 }
 
